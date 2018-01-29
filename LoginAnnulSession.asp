@@ -11,7 +11,7 @@
 	Dim strLName		' Customer's Last name
 	Dim strEmailAddress	' Customer's Email Addr 
 	Dim objUtility		' Utility Object used to log the event
-	Dim objCust			' RtlCustomer object
+	Dim objCust		' RtlCustomer object
 	Dim objCustomerRs	' Record set for customer info  
 	Dim objRs   		' RecordSet object for customer preferences
 
@@ -74,35 +74,35 @@
 		Dim intErrorCode					' to hold the error code returned by COM/Stored Proc
 		Dim strErrorMsg						' error message to display to users when loading customer settings
 
-		bExpressCheckoutFlag			= objRs("ExpressCheckoutFlag")
+		bExpressCheckoutFlag		= objRs("ExpressCheckoutFlag")
 		bBookThumbnailsOffGlobalFlag	= objRs("BookThumbnailsOffGlobalFlag")
 		bBookThumbnailsOffSearchFlag	= objRs("BookThumbnailsOffSearchFlag")
-		bDVDThumbnailsOffGlobalFlag		= objRs("DVDThumbnailsOffGlobalFlag")
-		bDVDThumbnailsOffSearchFlag		= objRs("DVDThumbnailsOffSearchFlag")
+		bDVDThumbnailsOffGlobalFlag	= objRs("DVDThumbnailsOffGlobalFlag")
+		bDVDThumbnailsOffSearchFlag	= objRs("DVDThumbnailsOffSearchFlag")
 		bMusicThumbnailsOffGlobalFlag	= objRs("MusicThumbnailsOffGlobalFlag")
 		bMusicThumbnailsOffSearchFlag	= objRs("MusicThumbnailsOffSearchFlag")
-		intBookDefaultSort				= objRs("BookDefaultSort")
-		intDVDDefaultSort				= objRs("DVDDefaultSort")
-		intMusicDefaultSort				= objRs("MusicDefaultSort")
-		intShipMethod					= objRs("DefaultShipMethodID")
-		strErrorMsg						= objRs("ErrorMsg")
+		intBookDefaultSort		= objRs("BookDefaultSort")
+		intDVDDefaultSort		= objRs("DVDDefaultSort")
+		intMusicDefaultSort		= objRs("MusicDefaultSort")
+		intShipMethod			= objRs("DefaultShipMethodID")
+		strErrorMsg			= objRs("ErrorMsg")
 		
 		objRs.Close
 		Set objCust = Nothing
 		Set objRs = Nothing
 
 		' Set Session variables for customer preferences
-		Session("ExpressCheckoutFlag")			= bExpressCheckoutFlag
+		Session("ExpressCheckoutFlag")		= bExpressCheckoutFlag
 		Session("BookThumbnailsOffGlobalFlag")	= bBookThumbnailsOffGlobalFlag
 		Session("BookThumbnailsOffSearchFlag")	= bBookThumbnailsOffSearchFlag
 		Session("DVDThumbnailsOffGlobalFlag")	= bDVDThumbnailsOffGlobalFlag
 		Session("DVDThumbnailsOffSearchFlag")	= bDVDThumbnailsOffSearchFlag
 		Session("MusicThumbnailsOffGlobalFlag")	= bMusicThumbnailsOffGlobalFlag
 		Session("MusicThumbnailsOffSearchFlag")	= bMusicThumbnailsOffSearchFlag
-		Session("BookDefaultSort")				= intBookDefaultSort
-		Session("MusicDefaultSort")				= intMusicDefaultSort
-		Session("DVDDefaultSort")				= intDVDDefaultSort
-		Session("ShipMethod")					= intShipMethod
+		Session("BookDefaultSort")		= intBookDefaultSort
+		Session("MusicDefaultSort")		= intMusicDefaultSort
+		Session("DVDDefaultSort")		= intDVDDefaultSort
+		Session("ShipMethod")			= intShipMethod
 
 		If strErrorMsg & "x" <> "x" Then
 		%>
