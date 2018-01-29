@@ -60,19 +60,19 @@
 
 		Set objRs = objCust.GetCustomerWebSetting(Session("CustomerID"))
 		
-		Dim bExpressCheckoutFlag			' if use express checkout as default
+		Dim bExpressCheckoutFlag		' if use express checkout as default
 		Dim bBookThumbnailsOffGlobalFlag	' Turn off all thumbnails in book page for viewing if true
 		Dim bBookThumbnailsOffSearchFlag	' Turn off all thumbnails in book search page for viewing if true
 		Dim bDVDThumbnailsOffGlobalFlag		' Turn off all thumbnails in DVD page for viewing if true
 		Dim bDVDThumbnailsOffSearchFlag		' Turn off all thumbnails in DVD search page for viewing if true
 		Dim bMusicThumbnailsOffGlobalFlag	' Turn off all thumbnails in music page for viewing if true
 		Dim bMusicThumbnailsOffSearchFlag	' Turn off all thumbnails in music search page for viewing if true
-		Dim intBookDefaultSort				' book page's default sort type
-		Dim intDVDDefaultSort				' DVD page's default sort type
-		Dim intMusicDefaultSort				' music page's default sort type
-		Dim intShipMethod					' default ship method
-		Dim intErrorCode					' to hold the error code returned by COM/Stored Proc
-		Dim strErrorMsg						' error message to display to users when loading customer settings
+		Dim intBookDefaultSort			' book page's default sort type
+		Dim intDVDDefaultSort			' DVD page's default sort type
+		Dim intMusicDefaultSort			' music page's default sort type
+		Dim intShipMethod			' default ship method
+		Dim intErrorCode			' to hold the error code returned by COM/Stored Proc
+		Dim strErrorMsg				' error message to display to users when loading customer settings
 
 		bExpressCheckoutFlag		= objRs("ExpressCheckoutFlag")
 		bBookThumbnailsOffGlobalFlag	= objRs("BookThumbnailsOffGlobalFlag")
