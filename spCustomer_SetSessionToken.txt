@@ -1,0 +1,59 @@
+USE [RetailWeb]
+GO
+
+/****** Object:  StoredProcedure [dbo].[spCustomer_SetSessionToken]    Script Date: 9/11/2017 10:18:50 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[spCustomer_SetSessionToken]
+	@VisitorID		varchar(255),		-- a unique ID tied to the session and set in global.asa
+	@CustomerID		varchar(255),		-- the customer's ID
+	@HashedToken    varchar(255) OUTPUT
+/*=======================================================================================
+Name of Procedure	: dbo.spCustomer_SetSessionToken
+Date Created		: 07/18/17
+Created By			: John Hovanec
+Description			: create and return a session token to be used to transfer a customer's session information upon login
+Used By				: 
+=========================================================================================
+Date Modified		Developer	Description of Mod/ModNumber
+
+=========================================================================================
+Example Invovation:
+DECLARE @Token varchar(255)
+EXEC spCustomer_SetSessionToken '9209345C00000002', 'RC000175428', @HashedToken = @Token OUTPUT
+========================================================================================*/
+
+AS
+BEGIN
+	SET NOCOUNT ON
+
+	DECLARE @ValueToHash varchar(255),									-- combination of VisitorId, CustomerID, and SYSDATETIME()
+			@strReturn_Text varchar(255)								-- to return error message
+
+	SET @ValueToHash = CONCAT(@VisitorID, @CustomerID, SYSDATETIME())	--combine VisitorId, CustomerID and SYSDATETIME() to get a unique value to hash
+	
+	BEGIN
+		SELECT @HashedToken = SUBSTRING(CONVERT(varchar(255), (HashBytes('SHA2_256', @ValueToHash)), 1), 3, 32)
+		BEGIN TRY
+			INSERT INTO tblRtlCustomerSessionTransfer
+			VALUES (@VisitorID, @CustomerID,  @HashedToken, CURRENT_TIMESTAMP) 
+		END TRY
+
+		BEGIN CATCH		
+			SET @strReturn_Text = ERROR_MESSAGE();
+		END CATCH
+		SELECT @HashedToken
+	END
+
+
+END
+
+
+
+GO
+
+

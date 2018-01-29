@@ -1,0 +1,59 @@
+USE [RetailWeb]
+GO
+
+/****** Object:  StoredProcedure [dbo].[spCustomer_VerifySessionToken]    Script Date: 9/8/2017 1:53:45 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE PROCEDURE [dbo].[spCustomer_VerifySessionToken]
+	@Token			varchar(255),			-- the token used in the cookie
+	@CustomerID		varchar(255) OUTPUT		-- customer's web ID
+/*=======================================================================================
+Name of Procedure	: dbo.spCustomer_VerifySessionToken
+Date Created		: 07/18/17
+Created By			: John Hovanec
+Description			: check that a session transfer token is valid, return customerID if valid
+Used By				: 
+=========================================================================================
+Date Modified		Developer	Description of Mod/ModNumber
+
+=========================================================================================
+Example Invovation:
+DECLARE @ID varchar
+EXEC spCustomer_VerifySessionToken '1bb5077241916389355ddb09c2e785f8', @CustomerID = @ID OUTPUT
+========================================================================================*/
+
+AS
+BEGIN
+	SET NOCOUNT ON
+
+	DECLARE @expireTime smalldatetime
+	
+	-- Get the info for the given token
+	SELECT @expireTime = RequestTimeStamp, @CustomerID = CustomerID
+	FROM tblRtlCustomerSessionTransfer
+	WHERE @Token = SessionToken											-- check that the token matches
+
+	-- Check that the token has not expired
+	IF CURRENT_TIMESTAMP < dateadd(n,5,@expireTime)						-- give it 5 minutes to avoid network timeouts if things are very slow
+		BEGIN
+			UPDATE tblRtlCustomerSessionTransfer						-- expire the token
+			SET RequestTimeStamp = dateadd(n, -5, CURRENT_TIMESTAMP)	-- set expiration to current timestamp minus 5 minutes so token can't be reused
+			WHERE @Token = SessionToken 
+			SELECT @CustomerID											-- return the user's customer ID if valid
+		END
+	ELSE
+		BEGIN
+			SET @CustomerID = 'INVALID'									-- return 'INVALID' if token is not valid
+			SELECT @CustomerID
+		END
+END
+
+
+GO
+
+
