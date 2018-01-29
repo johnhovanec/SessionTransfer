@@ -15,9 +15,9 @@ CREATE PROCEDURE [dbo].[spCustomer_VerifySessionToken]
 /*=======================================================================================
 Name of Procedure	: dbo.spCustomer_VerifySessionToken
 Date Created		: 07/18/17
-Created By			: John Hovanec
-Description			: check that a session transfer token is valid, return customerID if valid
-Used By				: 
+Created By		: John Hovanec
+Description		: check that a session transfer token is valid, return customerID if valid
+Used By			: 
 =========================================================================================
 Date Modified		Developer	Description of Mod/ModNumber
 
@@ -36,19 +36,19 @@ BEGIN
 	-- Get the info for the given token
 	SELECT @expireTime = RequestTimeStamp, @CustomerID = CustomerID
 	FROM tblRtlCustomerSessionTransfer
-	WHERE @Token = SessionToken											-- check that the token matches
+	WHERE @Token = SessionToken								-- check that the token matches
 
 	-- Check that the token has not expired
-	IF CURRENT_TIMESTAMP < dateadd(n,5,@expireTime)						-- give it 5 minutes to avoid network timeouts if things are very slow
+	IF CURRENT_TIMESTAMP < dateadd(n,5,@expireTime)						-- give it 5 minutes to avoid timeouts 
 		BEGIN
-			UPDATE tblRtlCustomerSessionTransfer						-- expire the token
-			SET RequestTimeStamp = dateadd(n, -5, CURRENT_TIMESTAMP)	-- set expiration to current timestamp minus 5 minutes so token can't be reused
+			UPDATE tblRtlCustomerSessionTransfer					-- expire the token
+			SET RequestTimeStamp = dateadd(n, -5, CURRENT_TIMESTAMP)		-- set expiration to current timestamp minus 5 minutes so token can't be reused
 			WHERE @Token = SessionToken 
-			SELECT @CustomerID											-- return the user's customer ID if valid
+			SELECT @CustomerID							-- return the user's customer ID if valid
 		END
 	ELSE
 		BEGIN
-			SET @CustomerID = 'INVALID'									-- return 'INVALID' if token is not valid
+			SET @CustomerID = 'INVALID'						-- return 'INVALID' if token is not valid
 			SELECT @CustomerID
 		END
 END
