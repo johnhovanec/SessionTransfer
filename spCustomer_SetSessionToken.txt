@@ -11,13 +11,13 @@ GO
 CREATE PROCEDURE [dbo].[spCustomer_SetSessionToken]
 	@VisitorID		varchar(255),		-- a unique ID tied to the session and set in global.asa
 	@CustomerID		varchar(255),		-- the customer's ID
-	@HashedToken    varchar(255) OUTPUT
+	@HashedToken    	varchar(255) OUTPUT
 /*=======================================================================================
 Name of Procedure	: dbo.spCustomer_SetSessionToken
 Date Created		: 07/18/17
-Created By			: John Hovanec
-Description			: create and return a session token to be used to transfer a customer's session information upon login
-Used By				: 
+Created By		: John Hovanec
+Description		: create and return a session token to be used to transfer a customer's session information upon login
+Used By			: 
 =========================================================================================
 Date Modified		Developer	Description of Mod/ModNumber
 
@@ -31,8 +31,8 @@ AS
 BEGIN
 	SET NOCOUNT ON
 
-	DECLARE @ValueToHash varchar(255),									-- combination of VisitorId, CustomerID, and SYSDATETIME()
-			@strReturn_Text varchar(255)								-- to return error message
+	DECLARE @ValueToHash varchar(255),					-- combination of VisitorId, CustomerID, and SYSDATETIME()
+			@strReturn_Text varchar(255)				-- to return error message
 
 	SET @ValueToHash = CONCAT(@VisitorID, @CustomerID, SYSDATETIME())	--combine VisitorId, CustomerID and SYSDATETIME() to get a unique value to hash
 	
